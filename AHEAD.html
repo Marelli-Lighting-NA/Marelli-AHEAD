@@ -152,6 +152,18 @@ h2{font-size:clamp(2.7rem,6vw,6rem);line-height:.94;letter-spacing:-.045em;margi
     user-select:none;
 }
 
+
+@media (min-width:3000px){
+  :root{--header-h:108px}
+  .brand .marelli{height:50px;max-width:170px}
+  .brand .ahead{height:46px;max-width:175px}
+  .icon-btn{height:55px;min-width:55px}
+  .tour-btn{padding:0 22px;font-size:1rem}
+  .progress-nav{transform:scale(1.25);transform-origin:center}
+  .scene-inner{width:min(1800px,90vw)}
+  .developer-signature{font-size:.68rem}
+}
+
 @media(max-width:900px){
  .site-header{grid-template-columns:1fr auto}.progress-nav{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);top:auto}.brand .ahead,.brand-sep{display:none}.tour-btn span{display:none}.scene-inner{width:88vw}.objective-layout,.customer-wrap{grid-template-columns:1fr;gap:38px}.objective-layout{align-content:center}.type-card{padding:25px}.customer-copy{text-align:center}.customer-orbit{width:min(92vw,590px)}.client{width:59px;height:59px;margin:-29.5px;transform:rotate(var(--a)) translateX(clamp(128px,37vw,235px)) rotate(calc(-1 * var(--a)))}.closing-lockup{gap:22px}.closing-lockup img{max-width:135px}.closing-lockup .line{height:50px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.typewriter:after{animation:none}.scene-video{display:none}}
@@ -229,7 +241,10 @@ h2{font-size:clamp(2.7rem,6vw,6rem);line-height:.94;letter-spacing:-.045em;margi
   <div class="scene-shade"></div><div class="scene-grain"></div>
   <div class="scene-inner"><div class="scene-copy reveal">
     <div class="eyebrow">Marelli Lighting North America · 2027–2033</div>
-    <h1><span class="hero-first-line">Lighting a Brighter</span><br><span class="accent">Tomorrow.</span></h1>
+    <h1>
+    <span class="hero-first-line">Lighting a Brighter</span><br>
+    <span class="accent">Tomorrow.</span>
+</h1>
     <span class="hero-title-small">Our people · Our technology · A safer, more connected world</span>
     <div class="meta-line">
     <span><i></i>A more connected tomorrow</span>
@@ -292,7 +307,7 @@ const soundBtn=document.getElementById('soundBtn');
 const transitionOverlay=document.getElementById('transitionOverlay');
 let transitionBusy=false;
 let activeScene=scenes[0],soundOn=false,typeTimers=new WeakMap();
-let tourState='IDLE',tourIndex=0,loopEnabled=false,tourTimer=null,segmentStartTime=0,segmentRemainingTime=0;
+let tourState='IDLE',tourIndex=0,loopEnabled=true,tourTimer=null,segmentStartTime=0,segmentRemainingTime=0;
 storyMusic.volume=.16;
 function fallbackLogo(img,text){const p=img.parentElement;img.remove();const x=document.createElement('span');x.textContent=text;p.appendChild(x)}
 function tryPlay(v){if(!v)return;v.muted=true;v.volume=0;v.play().then(()=>v.classList.add('ready')).catch(()=>{})}
@@ -335,7 +350,15 @@ function finishStory(){stopStory()}
 function toggleLoop(){loopEnabled=!loopEnabled;updateTourControls()}
 tourBtn.addEventListener('click',startStory);pauseBtn.addEventListener('click',togglePauseStory);stopBtn.addEventListener('click',stopStory);loopBtn.addEventListener('click',toggleLoop);
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){stopStory();return}if(e.key==='ArrowDown'||e.key==='PageDown'){e.preventDefault();const i=scenes.indexOf(activeScene);scenes[Math.min(i+1,scenes.length-1)].scrollIntoView({behavior:'smooth'})}if(e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();const i=scenes.indexOf(activeScene);scenes[Math.max(i-1,0)].scrollIntoView({behavior:'smooth'})}});
-window.addEventListener('load',()=>{if('scrollRestoration'in history)history.scrollRestoration='manual';scrollTo(0,0);activeScene=scenes[0];playOnlyScene(activeScene);updateNav();updateTourControls()});
+window.addEventListener('load',()=>{
+  if('scrollRestoration' in history)history.scrollRestoration='manual';
+  scrollTo(0,0);
+  activeScene=scenes[0];
+  videos.forEach(v=>{v.muted=true;v.volume=0});
+  updateNav();
+  updateTourControls();
+  setTimeout(()=>startStory(),300);
+});
 </script>
 </body>
 </html>
